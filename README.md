@@ -15,7 +15,8 @@ source venv/bin/activate    # On Windows: venv\Scripts\activate
 3. Install dependencies:
 
 ```shell
-pip install django
+pip install -r requirements.txt
+# Else install seprate : pip install django
 ````
 4. Apply database migrations:
 

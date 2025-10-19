@@ -14,7 +14,7 @@ class CustomUserManager(BaseUserManager):
 class VoiceUser(AbstractBaseUser):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=128)
-    voice_note = models.FileField(upload_to='voice_notes/')
+    voice_note = models.FileField(upload_to='voice_notes/') # NOTE: here the File Store in the local 
     created_at = models.DateTimeField(auto_now_add=True)
     
     objects = CustomUserManager()
