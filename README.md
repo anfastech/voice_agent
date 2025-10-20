@@ -1,11 +1,11 @@
-# neuraqdevs-voice_agent
+# voice_agent features implementation
 
 
 ## Setup and Running
 
-1. Clone the repository and navigate to the project root directory (`neuraqdevs-voice_agent`).
+1. Clone the repository and navigate to the project root directory (`VOICE_AGENT`).
 
-2. (Optional) Create and activate a Python virtual environment:
+2. (Basic) Create and activate a Python virtual environment:
 
 ```shell 
 python -m venv venv
@@ -27,12 +27,22 @@ python manage.py migrate
 ```shell
 python manage.py runserver
 ````
-## Notes
+---
 
-- Adjust `voiceai/settings.py` as necessary for database or allowed hosts configuration.
-- Templates are located in the `templates/` directory.
-- Application URL configurations are in `voiceapp/urls.py` and `voiceai/urls.py`.
+## Notes ( For contribution )
+
+- ### install FFmpeg <br />
+<i>Install Chocolatey first (run as Administrator in PowerShell)</i>
+```shell
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+````
+
+<i>Then install ffmpeg (run as Administrator in PowerShell)</i>
+
+```shell
+choco install ffmpeg
+````
 
 ---
 
-Developed by neuraqdevs.
+Developed by neuraq devs.
