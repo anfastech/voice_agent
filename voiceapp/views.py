@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import VoiceUserForm
-from ..features.audio_processor import extract_real_audio_features
+from features.audio_processor import extract_real_audio_features
+
 
 def index(request):
     analysis_result = None
