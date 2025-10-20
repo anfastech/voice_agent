@@ -1,14 +1,22 @@
-# forms.py
+# forms.py (enhanced version - optional)
 from django import forms
-from .models import VoiceUser
 
-class VoiceUserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    voice_note = forms.FileField(
-        label='Record your voice',
-        help_text='Record a short voice sample for authentication'
+class VoiceUserForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'class': 'input w-full',
+            'placeholder': 'Enter your username',
+            'required': 'true'
+        })
     )
     
-    class Meta:
-        model = VoiceUser
-        fields = ['username', 'password', 'voice_note']
+    voice_note = forms.FileField(
+        widget=forms.FileInput(attrs={
+            'class': 'hidden',
+            'accept': 'audio/*',
+            'required': 'true'
+        }),
+        label='Voice Recording',
+        help_text='Record a short voice sample for authentication'
+    )

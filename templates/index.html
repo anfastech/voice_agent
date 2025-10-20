@@ -6,178 +6,319 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Voice Authentication Registration</title>
-    
+
     <!-- Basecoat UI CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.2/dist/basecoat.cdn.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.2/dist/js/all.min.js" defer></script>
-    
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.2/dist/basecoat.cdn.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.2/dist/js/all.min.js"
+      defer
+    ></script>
+
     {% load static %}
-    <link rel="stylesheet" href="{% static 'src/styles.css' %}">
-    
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'src/styles.css' %}" />
+  </head>
+  <body>
     <div class="main-container">
-        <div class="form-container vercel-gradient">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title title text-2xl font-bold">Voice Authentication Registration</h1>
+      <div class="form-container vercel-gradient">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="card-title title text-2xl font-bold">
+              Voice Authentication Registration
+            </h1>
+          </div>
+
+          <div class="card-content space-y-6">
+            <div class="instructions p-4 rounded-lg">
+              <p class="font-semibold mb-2">How to register:</p>
+              <ol
+                class="list-decimal list-inside space-y-1 text-sm text-muted-foreground"
+              >
+                <li>Enter a username and password</li>
+                <li>Click "Start Recording" and speak clearly for 3 seconds</li>
+                <li>Submit your registration</li>
+              </ol>
+            </div>
+
+            <form
+              method="post"
+              enctype="multipart/form-data"
+              id="registrationForm"
+              class="space-y-4"
+            >
+              <!-- CSRF token placeholder for Django -->
+              {% csrf_token %}
+
+              <div class="space-y-2">
+                <label for="username" class="label">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  required
+                  placeholder="Enter your username"
+                  class="input w-full"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label for="voice_note" class="label">Voice Recording</label>
+                <button
+                  type="button"
+                  class="btn record-btn w-full py-3"
+                  id="recordButton"
+                >
+                  <span class="icon">●</span> Start Recording
+                </button>
+                <input
+                  type="file"
+                  id="voice_note"
+                  name="voice_note"
+                  accept="audio/*"
+                  class="hidden"
+                  required
+                />
+                <audio
+                  id="audioPlayback"
+                  controls
+                  class="hidden rounded-lg"
+                ></audio>
+              </div>
+
+              <button
+                type="submit"
+                class="btn submit-btn w-full py-3 font-semibold"
+              >
+                Register
+              </button>
+            </form>
+
+            <!-- Results Section - Shows after form submission -->
+           {% if analysis_result %}
+<div class="results-section alert-success">
+    <h3 class="font-bold text-lg mb-3">🎉 Real Voice Analysis Results</h3>
+    
+    <div class="space-y-2 mb-4">
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Voice File:</strong> {{ voice_file }}</p>
+        <p><strong>Analysis Method:</strong> {{ analysis_result.analysis_method }}</p>
+    </div>
+    
+    {% if analysis_result.error %}
+        <div class="alert alert-destructive mt-3">
+            <strong>Error:</strong> {{ analysis_result.error }}
+        </div>
+    {% else %}
+        <!-- Acoustic Features -->
+        <div class="mt-4">
+            <h4 class="font-semibold mb-2">🔊 Acoustic Features:</h4>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="feature-card">
+                    <strong>Energy:</strong> {{ analysis_result.energy|floatformat:4 }}
                 </div>
-                
-                <div class="card-content space-y-6">
-                    <div class="instructions p-4 rounded-lg">
-                        <p class="font-semibold mb-2">How to register:</p>
-                        <ol class="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
-                            <li>Enter a username and password</li>
-                            <li>Click "Start Recording" and speak clearly for 3 seconds</li>
-                            <li>Submit your registration</li>
-                        </ol>
-                    </div>
-                    
-                    <form method="post" enctype="multipart/form-data" id="registrationForm" class="space-y-4">
-                        <!-- CSRF token placeholder for Django -->
-                        {% csrf_token %}
-                        
-                        <div class="space-y-2">
-                            <label for="username" class="label">Username</label>
-                            <input type="text" id="username" name="username" required 
-                                   placeholder="Enter your username" 
-                                   class="input w-full">
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label for="password" class="label">Password</label>
-                            <input type="password" id="password" name="password" required 
-                                   placeholder="Enter your password" 
-                                   class="input w-full">
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <label for="voice_note" class="label">Voice Recording</label>
-                            <button type="button" class="btn record-btn w-full py-3" id="recordButton">
-                                <span class="icon">●</span> Start Recording
-                            </button>
-                            <input type="file" id="voice_note" name="voice_note" accept="audio/*" class="hidden" required>
-                            <audio id="audioPlayback" controls class="hidden rounded-lg"></audio>
-                        </div>
-                        
-                        <button type="submit" class="btn submit-btn w-full py-3 font-semibold">
-                            Register
-                        </button>
-                    </form>
-                    
-                    <div class="alert hidden" id="statusMessage" role="alert"></div>
+                <div class="feature-card">
+                    <strong>Zero Crossing Rate:</strong> {{ analysis_result.zero_crossing_rate|floatformat:4 }}
+                </div>
+                <div class="feature-card">
+                    <strong>Spectral Centroid:</strong> {{ analysis_result.spectral_centroid|floatformat:0 }} Hz
+                </div>
+                <div class="feature-card">
+                    <strong>Fundamental Freq:</strong> {{ analysis_result.fundamental_frequency|floatformat:0 }} Hz
                 </div>
             </div>
         </div>
+        
+        <!-- Voice Assessment -->
+        <div class="mt-4">
+            <h4 class="font-semibold mb-2">🎤 Voice Assessment:</h4>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="feature-card">
+                    <strong>Voice Quality:</strong> {{ analysis_result.voice_quality }}
+                </div>
+                <div class="feature-card">
+                    <strong>Volume Level:</strong> {{ analysis_result.volume_level }}
+                </div>
+                <div class="feature-card">
+                    <strong>Pitch Level:</strong> {{ analysis_result.pitch_level }}
+                </div>
+                <div class="feature-card">
+                    <strong>Articulation:</strong> {{ analysis_result.articulation }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Speech Recognition Results -->
+        <div class="mt-4 p-3 bg-blue-50 rounded">
+            <h4 class="font-semibold mb-2">💬 Speech Recognition:</h4>
+            <p><strong>Spoken Text:</strong> <em>"{{ analysis_result.spoken_text }}"</em></p>
+            <p><strong>Speech Detected:</strong> {{ analysis_result.speech_detected|yesno:"Yes,No" }}</p>
+        </div>
+        
+        <!-- Technical Details -->
+        <div class="mt-3 text-sm text-gray-600">
+            <p><strong>Duration:</strong> {{ analysis_result.duration_seconds|floatformat:2 }} seconds</p>
+            <p><strong>Sample Rate:</strong> {{ analysis_result.sample_rate }} Hz</p>
+            <p><strong>Confidence:</strong> {{ analysis_result.confidence|floatformat:3 }}</p>
+        </div>
+    {% endif %}
+    
+    <button onclick="resetForm()" class="btn record-btn mt-4">
+        Analyze Another Voice
+    </button>
+</div>
+{% endif %}
+
+            <div class="alert hidden" id="statusMessage" role="alert"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const recordButton = document.getElementById('recordButton');
-            const voiceNoteInput = document.getElementById('voice_note');
-            const audioPlayback = document.getElementById('audioPlayback');
-            const statusMessage = document.getElementById('statusMessage');
-            
-            let mediaRecorder;
-            let audioChunks = [];
-            
-            // Check if browser supports audio recording
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                showStatus('Your browser does not support audio recording. Please use a modern browser like Chrome or Firefox.', 'error');
-                recordButton.disabled = true;
-            }
-            
-            recordButton.addEventListener('click', function() {
-                if (this.classList.contains('recording')) {
-                    stopRecording();
-                    this.classList.remove('recording');
-                    this.innerHTML = '<span class="icon">●</span> Start Recording';
-                } else {
-                    startRecording();
-                    this.classList.add('recording');
-                    this.innerHTML = '<span class="icon">⏹</span> Stop Recording';
-                }
-            });
-            
-            async function startRecording() {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(stream);
-                    
-                    mediaRecorder.ondataavailable = function(event) {
-                        audioChunks.push(event.data);
-                    };
-                    
-                    mediaRecorder.onstop = function() {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                        
-                        // Create a File object from the Blob
-                        const audioFile = new File([audioBlob], 'recording.webm', { type: 'audio/webm' });
-                        
-                        // Create a DataTransfer object to set the file input
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(audioFile);
-                        voiceNoteInput.files = dataTransfer.files;
-                        
-                        // Create a URL for playback
-                        const audioUrl = URL.createObjectURL(audioBlob);
-                        audioPlayback.src = audioUrl;
-                        audioPlayback.classList.remove('hidden');
-                        
-                        // Stop all tracks
-                        mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                        
-                        showStatus('Recording saved successfully!', 'success');
-                    };
-                    
-                    mediaRecorder.start();
-                    audioChunks = [];
-                    
-                    // Automatically stop after 5 seconds
-                    setTimeout(() => {
-                        if (mediaRecorder && mediaRecorder.state === 'recording') {
-                            recordButton.click();
-                        }
-                    }, 5000);
-                    
-                } catch (error) {
-                    console.error('Error accessing microphone:', error);
-                    showStatus('Error accessing microphone. Please check permissions.', 'error');
-                }
-            }
-            
-            function stopRecording() {
-                if (mediaRecorder && mediaRecorder.state === 'recording') {
-                    mediaRecorder.stop();
-                }
-            }
-            
-            function showStatus(message, type) {
-                statusMessage.textContent = message;
-                statusMessage.className = `alert alert-${type}`;
-                statusMessage.classList.remove('hidden');
-                
-                // Hide status after 5 seconds
-                setTimeout(() => {
-                    statusMessage.classList.add('hidden');
-                }, 5000);
-            }
-            
-            // Form submission handling
-            document.getElementById('registrationForm').addEventListener('submit', function(e) {
-                if (!voiceNoteInput.files.length) {
-                    e.preventDefault();
-                    showStatus('Please record your voice before submitting.', 'error');
-                    return false;
-                }
-                
-                showStatus('Submitting registration...', 'info');
-            });
+        function resetForm() {
+            document.getElementById('registrationForm').reset();
+            window.location.href = window.location.href.split('?')[0]; // Reload without query params
+        }
+      document.addEventListener("DOMContentLoaded", function () {
+        const recordButton = document.getElementById("recordButton");
+        const voiceNoteInput = document.getElementById("voice_note");
+        const audioPlayback = document.getElementById("audioPlayback");
+        const statusMessage = document.getElementById("statusMessage");
+
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Check if browser supports audio recording
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showStatus(
+            "Your browser does not support audio recording. Please use a modern browser like Chrome or Firefox.",
+            "error"
+          );
+          recordButton.disabled = true;
+        }
+
+        recordButton.addEventListener("click", function () {
+          if (this.classList.contains("recording")) {
+            stopRecording();
+            this.classList.remove("recording");
+            this.innerHTML = '<span class="icon">●</span> Start Recording';
+          } else {
+            startRecording();
+            this.classList.add("recording");
+            this.innerHTML = '<span class="icon">⏹</span> Stop Recording';
+          }
         });
+
+        async function startRecording() {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              audio: {
+                channelCount: 1,
+                sampleRate: 16000,
+                sampleSize: 16,
+              },
+            });
+
+            mediaRecorder = new MediaRecorder(stream, {
+              mimeType: "audio/webm;codecs=opus",
+            });
+
+            mediaRecorder.ondataavailable = function (event) {
+              if (event.data.size > 0) {
+                audioChunks.push(event.data);
+              }
+            };
+
+            mediaRecorder.onstop = function () {
+              const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+
+              // Create a more descriptive filename
+              const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+              const filename = `recording-${timestamp}.webm`;
+
+              // Create a File object with proper filename
+              const audioFile = new File([audioBlob], filename, {
+                type: "audio/webm",
+                lastModified: new Date().getTime(),
+              });
+
+              // Create a DataTransfer object to set the file input
+              const dataTransfer = new DataTransfer();
+              dataTransfer.items.add(audioFile);
+              voiceNoteInput.files = dataTransfer.files;
+
+              // Create a URL for playback
+              const audioUrl = URL.createObjectURL(audioBlob);
+              audioPlayback.src = audioUrl;
+              audioPlayback.classList.remove("hidden");
+
+              // Stop all tracks
+              stream.getTracks().forEach((track) => track.stop());
+
+              showStatus(`Recording saved as ${filename}`, "success");
+              console.log("File ready for upload:", audioFile); // Debug
+            };
+
+            mediaRecorder.start(1000); // Collect data every second
+            audioChunks = [];
+
+            // Automatically stop after 5 seconds
+            setTimeout(() => {
+              if (mediaRecorder && mediaRecorder.state === "recording") {
+                stopRecording();
+                recordButton.classList.remove("recording");
+                recordButton.innerHTML =
+                  '<span class="icon">●</span> Start Recording';
+              }
+            }, 5000);
+          } catch (error) {
+            console.error("Error accessing microphone:", error);
+            showStatus(
+              "Error accessing microphone. Please check permissions.",
+              "error"
+            );
+          }
+        }
+
+        function stopRecording() {
+          if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
+        }
+
+        function showStatus(message, type) {
+          statusMessage.textContent = message;
+          statusMessage.className = `alert alert-${type}`;
+          statusMessage.classList.remove("hidden");
+
+          // Hide status after 5 seconds
+          setTimeout(() => {
+            statusMessage.classList.add("hidden");
+          }, 5000);
+        }
+
+        // Form submission handling
+        document
+          .getElementById("registrationForm")
+          .addEventListener("submit", function (e) {
+            if (!voiceNoteInput.files.length) {
+              e.preventDefault();
+              showStatus(
+                "Please record your voice before submitting.",
+                "error"
+              );
+              return false;
+            }
+
+            showStatus("Submitting registration...", "info");
+          });
+      });
     </script>
-</body>
+  </body>
 </html>
