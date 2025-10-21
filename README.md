@@ -15,7 +15,7 @@ source venv/bin/activate    # On Windows: venv\Scripts\activate
 3. Install dependencies:
 
 ```shell
-pip install django
+pip install django numpy SpeechRecognition pydub
 ````
 4. Apply database migrations:
 

@@ -1,4 +1,4 @@
-# forms.py (enhanced version - optional)
+# forms.py
 from django import forms
 
 class VoiceUserForm(forms.Form):

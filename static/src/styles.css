@@ -1,28 +1,28 @@
 :root {
             /* Dark Vercel theme variables */
-            --background: #000000;
-            --foreground: #fafafa;
-            --card: #0a0a0a;
-            --card-foreground: #fafafa;
-            --popover: #0a0a0a;
-            --popover-foreground: #fafafa;
-            --primary: #fafafa;
-            --primary-foreground: #0a0a0a;
-            --secondary: #262626;
-            --secondary-foreground: #fafafa;
-            --muted: #262626;
-            --muted-foreground: #a1a1aa;
-            --accent: #262626;
-            --accent-foreground: #fafafa;
-            --destructive: #dc2626;
-            --destructive-foreground: #fafafa;
-            --border: #262626;
-            --input: #262626;
-            --ring: #d4d4d8;
+            --background: #ffffff;
+            --foreground: #000000;
+            --card-foreground: #000000;
+            --card: #fafafa;
+            --popover-foreground: #0a0a0a;
+            --popover: #fafafa;
+            --primary-foreground: #fafafa;
+            --primary: #0a0a0a;
+            --secondary-foreground: #262626;
+            --secondary: #fafafa;
+            --muted-foreground: #262626;
+            --muted: #a1a1aa;
+            --accent-foreground: #262626;
+            --accent: #fafafa;
+            --destructive-foreground: #dc2626;
+            --destructive: #000000;
+            --border: #ffffff;
+            --input: #fbfbfb;
+            --ring: #000000;
         }
 
         body {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            /* background: linear-gradient(135deg, #ffffff 0%, #e6e6e6 50%, #f1f1f1 100%); */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -48,12 +48,12 @@
         }
         
         .vercel-gradient {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            background: linear-gradient(135deg, rgba(241, 241, 241, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
             border: 1px solid rgba(255,255,255,0.1);
         }
         
         .title {
-            background: linear-gradient(135deg, #fafafa 0%, #a1a1aa 100%);
+            background: linear-gradient(135deg, #000000 0%, #282828 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -127,7 +127,7 @@
         
         /* Override Basecoat styles */
         .input {
-            background-color: var(--input);
+            background-color: white !important;
             border-color: var(--border);
             color: var(--foreground);
         }
