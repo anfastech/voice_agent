@@ -1,13 +1,17 @@
 # voice_agent features implementation
 
-
 ## Setup and Running
 
-1. Clone the repository and navigate to the project root directory (`VOICE_AGENT`).
+1. Clone the repository and navigate to the project woeking directory (`/features`). 
+working files `audio_processor.py` or create your own. <br />
+NOTE : current changes are done under `analyzer` branch, use 
+```d
+git switch analyzer
+````
 
-2. (Basic) Create and activate a Python virtual environment:
+2. Create and activate a Python virtual environment:
 
-```shell 
+```shell
 python -m venv venv
 source venv/bin/activate    # On Windows: venv\Scripts\activate
 
@@ -17,12 +21,13 @@ source venv/bin/activate    # On Windows: venv\Scripts\activate
 ```shell
 pip install django numpy SpeechRecognition pydub
 ````
-4. Apply database migrations:
+<!-- 4. Apply database migrations: -->
+<!-- currently we dont use db -->
 
-```shell
+<!-- ```shell
 python manage.py migrate
-````
-5. Run the development server:
+```` -->
+4. Run the development server: before this ensure you installed FFmpeg ( The package we use now )
 
 ```shell
 python manage.py runserver
